@@ -6,7 +6,8 @@
  * @see /xml/json.php for the API.
  * @version 2.0
  */
-jQuery.fn.nggAutocomplete = function ( args ) {
+jQuery.fn.nggAutocomplete = function (args) {
+	console.log('autocomplete', args);
 	const defaults = {
 		type: 'image',
 		domain: '',
@@ -19,20 +20,20 @@ jQuery.fn.nggAutocomplete = function ( args ) {
 		...args,
 	};
 
-	const obj = this[ 0 ];
-	const id = jQuery( this ).attr( 'id' );
+	const obj = this[0];
+	const id = jQuery(this).attr('id');
 	const cache = {};
 	let lastXhr;
 
 	/**
 	 * The element.
 	 */
-	const objSelector = jQuery( obj );
+	const objSelector = jQuery(obj);
 
 	/**
 	 * The current value of the dropdown field.
 	 */
-	let dropdownText = jQuery( '#' + id + ' option:selected' ).text();
+	let dropdownText = jQuery('#' + id + ' option:selected').text();
 
 	/**
 	 * Hide the drop down field and add the search field.
@@ -46,69 +47,73 @@ jQuery.fn.nggAutocomplete = function ( args ) {
 	/**
 	 * The search field.
 	 */
-	const searchField = jQuery( '#' + id + '_ac' );
+	const searchField = jQuery('#' + id + '_ac');
 
 	/**
 	 * Add the current value and set the style.
 	 */
 	searchField
-		.val( dropdownText )
-		.css( 'width', '60%' )
-		.addClass( 'ui-autocomplete-start' );
+		.val(dropdownText)
+		.css('width', '60%')
+		.addClass('ui-autocomplete-start');
 
 	/**
 	 * Initiate the autocomplete
 	 * 20150305: only add term to request if term is not empty
 	 */
-	searchField.autocomplete( {
-		source( request, response ) {
+	searchField.autocomplete({
+		source(request, response) {
+			console.log('request', request);
+			console.log('response', response);
 			const term = request.term;
-			if ( term in cache ) {
-				response( cache[ term ] );
+			if (term in cache) {
+				console.log('term cache', term);
+				response(cache[term]);
 				return;
 			}
 			// adding more $_GET parameter
 			lastXhr = jQuery.getJSON(
 				settings.domain,
 				{
-					...request,
 					type: settings.type,
 					limit: settings.limit,
 					method: 'autocomplete',
 					format: 'json',
 					callback: 'json',
 				},
-				function ( data, status, xhr ) {
+				function (data, status, xhr) {
+					console.log('status', status);
+					console.log('data', data);
 					// add term to cache
-					cache[ term ] = data;
-					if ( xhr === lastXhr ) response( data );
+					cache[term] = data;
+					if (xhr === lastXhr) response(data);
 				}
 			);
 		},
 		minLength: 0,
-		select( event, ui ) {
+		select(event, ui) {
 			/**
 			 * We we will add this to the selector.
 			 *
 			 * @type {Option} The option to be added.
 			 */
-			const option = new Option( ui.item.label, ui.item.id );
+			const option = new Option(ui.item.label, ui.item.id);
 
 			/**
 			 * Add the select attribute to the option and remove it from the others.
 			 */
-			jQuery( option ).attr( 'selected', true );
-			jQuery( '#' + id + ' option:selected' ).attr( 'selected', false );
+			jQuery(option).attr('selected', true);
+			jQuery('#' + id + ' option:selected').attr('selected', false);
 
 			/**
 			 * Add the option.
 			 */
-			objSelector.append( option );
+			objSelector.append(option);
 
 			/**
 			 * Remove autocomplete class.
 			 */
-			searchField.removeClass( 'ui-autocomplete-start' );
+			searchField.removeClass('ui-autocomplete-start');
 
 			/**
 			 * Update the text selector
@@ -120,29 +125,29 @@ jQuery.fn.nggAutocomplete = function ( args ) {
 			 *
 			 * @since 1.1
 			 */
-			objSelector.trigger( 'nggAutocompleteDone' );
+			objSelector.trigger('nggAutocompleteDone');
 		},
-	} );
+	});
 
 	/**
 	 * If the search field is empty and the focus is lost set default text
 	 */
-	searchField.on( 'focusout', () => {
-		if ( searchField.val() === '' ) {
-			searchField[ 0 ].value = dropdownText;
+	searchField.on('focusout', () => {
+		if (searchField.val() === '') {
+			searchField[0].value = dropdownText;
 		}
-	} );
+	});
 
-	searchField.on( 'click', function () {
+	searchField.on('click', function () {
 		let search = searchField.val();
 
 		/**
 		 * If the selected value is already present, we need to show all images.
 		 */
-		if ( search === dropdownText ) {
-			searchField[ 0 ].value = '';
+		if (search === dropdownText) {
+			searchField[0].value = '';
 			search = '';
 		}
-		searchField.autocomplete( 'search', search );
-	} );
+		searchField.autocomplete('search', search);
+	});
 };

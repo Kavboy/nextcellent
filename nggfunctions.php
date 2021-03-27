@@ -264,7 +264,7 @@ function nggShowGallery( $galleryID, $template = '', $images = false ) {
 function nggCreateGallery( $picturelist, $galleryID = false, $template = '', $images = false ) {
 	global $nggRewrite;
 
-	require_once dirname( __FILE__ ) . '/lib/media-rss.php';
+	require_once dirname( __FILE__ ) . '/src/lib/media-rss.php';
 
 	$ngg_options = nggGallery::get_option( 'ngg_options' );
 
@@ -745,7 +745,7 @@ function nggCreateImageBrowser( $picturelist, $template = '' ) {
 
 	global $nggRewrite, $ngg;
 
-	require_once dirname( __FILE__ ) . '/lib/meta.php';
+	require_once dirname( __FILE__ ) . '/src/lib/meta.php';
 
 	// $_GET from wp_query
 	$pid = get_query_var( 'pid' );

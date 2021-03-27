@@ -49,7 +49,7 @@ class NGG_Admin_Launcher {
 		}
 
 		// older style
-		return path_join( NGGALLERY_URLPATH, 'admin/images/nextgen_16_color.png' );
+		return path_join( NGGALLERY_URLPATH, 'src/admin/images/nextgen_16_color.png' );
 	}
 
 	/**
