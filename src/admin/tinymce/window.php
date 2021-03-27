@@ -150,38 +150,38 @@ wp_enqueue_script( 'ngg-autocomplete', NGGALLERY_URLPATH . 'src/admin/js/ngg.aut
 							<td colspan="2" style="overflow:hidden;">
 								<div class="display-type">
 									<label for="type-nggallery">
-										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'admin/images/gallery.svg'; ?>" alt="gallery">
+										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'src/admin/images/gallery.svg'; ?>" alt="gallery">
 										<br /><input name="showtype" class="radiotype" type="radio" value="nggallery" id="type-nggallery" checked="checked" /><?php _e( 'Gallery', 'nggallery' ); ?>
 									</label>
 								</div>
 								<div class="display-type">
 									<label for="type-slideshow">
-										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'admin/images/slideshow.svg'; ?>" alt="slideshow">
+										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'src/admin/images/slideshow.svg'; ?>" alt="slideshow">
 										<br /><input name="showtype" class="radiotype" type="radio" value="slideshow" id="type-slideshow" /><?php _e( 'Slideshow', 'nggallery' ); ?>
 									</label>
 								</div>
 								<div class="display-type">
 									<label for="type-imagebrowser">
-										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'admin/images/imagebrowser.svg'; ?>" alt="browser">
+										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'src/admin/images/imagebrowser.svg'; ?>" alt="browser">
 										<br /><input name="showtype" class="radiotype" type="radio" value="imagebrowser" id="type-imagebrowser" /><?php _e( 'Imagebrowser', 'nggallery' ); ?>
 									</label>
 								</div>
 								<div class="display-type">
 									<label for="type-carousel">
-										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'admin/images/carousel.svg'; ?>" alt="carousel">
+										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'src/admin/images/carousel.svg'; ?>" alt="carousel">
 										<br /><input name="showtype" class="radiotype" type="radio" value="carousel" id="type-carousel" /><?php _e( 'Carousel', 'nggallery' ); ?>
 									</label>
 								</div>
 								<div class="display-type">
 									<label for="type-caption">
-										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'admin/images/caption.svg'; ?>" alt="caption">
+										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'src/admin/images/caption.svg'; ?>" alt="caption">
 										<br /><input name="showtype" class="radiotype" type="radio" value="caption" id="type-caption" /><?php _e( 'Caption', 'nggallery' ); ?>
 									</label>
 								</div>
 								<?php // TODO: add some kind of filter here ?>
 								<div class="display-type">
 									<label for="type-other">
-										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'admin/images/other.svg'; ?>" alt="carousel">
+										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'src/admin/images/other.svg'; ?>" alt="carousel">
 										<br /><input name="showtype" class="radiotype" type="radio" value="other" id="type-other" /><?php _e( 'Custom', 'nggallery' ); ?>
 									</label>
 								</div>
@@ -252,13 +252,13 @@ wp_enqueue_script( 'ngg-autocomplete', NGGALLERY_URLPATH . 'src/admin/js/ngg.aut
 							<td colspan="2">
 								<div class="album-type">
 									<label for="album-type-compact">
-										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'admin/images/compact.svg'; ?>" alt="compact">
+										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'src/admin/images/compact.svg'; ?>" alt="compact">
 										<br /><input name="albumtype" type="radio" value="compact" id="album-type-compact" checked="checked" /><?php _e( 'Compact version', 'nggallery' ); ?>
 									</label>
 								</div>
 								<div class="album-type">
 									<label for="album-type-extend">
-										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'admin/images/extend.svg'; ?>" alt="extend">
+										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'src/admin/images/extend.svg'; ?>" alt="extend">
 										<br /><input name="albumtype" type="radio" value="extend" id="album-type-extend" /><?php _e( 'Extended version', 'nggallery' ); ?>
 									</label>
 								</div>
@@ -274,19 +274,19 @@ wp_enqueue_script( 'ngg-autocomplete', NGGALLERY_URLPATH . 'src/admin/js/ngg.aut
 							<td colspan="2">
 								<div class="album-type">
 									<label for="albumtype-nggallery">
-										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'admin/images/gallery.svg'; ?>" alt="gallery">
+										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'src/admin/images/gallery.svg'; ?>" alt="gallery">
 										<br /><input name="album-showtype" class="radiotype" type="radio" value="nggallery" id="albumtype-nggallery" checked="checked" /><?php _e( 'Gallery', 'nggallery' ); ?>
 									</label>
 								</div>
 								<div class="album-type">
 									<label for="albumtype-carousel">
-										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'admin/images/carousel.svg'; ?>" alt="carousel">
+										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'src/admin/images/carousel.svg'; ?>" alt="carousel">
 										<br /><input name="album-showtype" class="radiotype" type="radio" value="carousel" id="albumtype-carousel" /><?php _e( 'Carousel', 'nggallery' ); ?>
 									</label>
 								</div>
 								<div class="album-type">
 									<label for="albumtype-caption">
-										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'admin/images/caption.svg'; ?>" alt="caption">
+										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'src/admin/images/caption.svg'; ?>" alt="caption">
 										<br /><input name="album-showtype" class="radiotype" type="radio" value="caption" id="albumtype-caption" /><?php _e( 'Caption', 'nggallery' ); ?>
 									</label>
 								</div>
@@ -395,19 +395,19 @@ wp_enqueue_script( 'ngg-autocomplete', NGGALLERY_URLPATH . 'src/admin/js/ngg.aut
 							<td colspan="2">
 								<div class="recent-type">
 									<label for="recenttype-nggallery">
-										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'admin/images/gallery.svg'; ?>" alt="gallery">
+										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'src/admin/images/gallery.svg'; ?>" alt="gallery">
 										<br /><input name="recent-showtype" class="radiotype" type="radio" value="nggallery" id="recenttype-nggallery" checked="checked" /><?php _e( 'Gallery', 'nggallery' ); ?>
 									</label>
 								</div>
 								<div class="recent-type">
 									<label for="recenttype-carousel">
-										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'admin/images/carousel.svg'; ?>" alt="carousel">
+										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'src/admin/images/carousel.svg'; ?>" alt="carousel">
 										<br /><input name="recent-showtype" class="radiotype" type="radio" value="carousel" id="recenttype-carousel" /><?php _e( 'Carousel', 'nggallery' ); ?>
 									</label>
 								</div>
 								<div class="recent-type">
 									<label for="recenttype-caption">
-										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'admin/images/caption.svg'; ?>" alt="caption">
+										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'src/admin/images/caption.svg'; ?>" alt="caption">
 										<br /><input name="recent-showtype" class="radiotype" type="radio" value="caption" id="recenttype-caption" /><?php _e( 'Caption', 'nggallery' ); ?>
 									</label>
 								</div>
@@ -446,19 +446,19 @@ wp_enqueue_script( 'ngg-autocomplete', NGGALLERY_URLPATH . 'src/admin/js/ngg.aut
 							<td colspan="2">
 								<div class="random-type">
 									<label for="randomtype-nggallery">
-										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'admin/images/gallery.svg'; ?>" alt="gallery">
+										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'src/admin/images/gallery.svg'; ?>" alt="gallery">
 										<br /><input name="random-showtype" class="radiotype" type="radio" value="nggallery" id="randomtype-nggallery" checked="checked" /><?php _e( 'Gallery', 'nggallery' ); ?>
 									</label>
 								</div>
 								<div class="random-type">
 									<label for="randomtype-carousel">
-										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'admin/images/carousel.svg'; ?>" alt="carousel">
+										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'src/admin/images/carousel.svg'; ?>" alt="carousel">
 										<br /><input name="random-showtype" class="radiotype" type="radio" value="carousel" id="randomtype-carousel" /><?php _e( 'Carousel', 'nggallery' ); ?>
 									</label>
 								</div>
 								<div class="random-type">
 									<label for="randomtype-caption">
-										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'admin/images/caption.svg'; ?>" alt="caption">
+										<img class="display-type-img" src="<?php echo NGGALLERY_URLPATH . 'src/admin/images/caption.svg'; ?>" alt="caption">
 										<br /><input name="random-showtype" class="radiotype" type="radio" value="caption" id="randomtype-caption" /><?php _e( 'Caption', 'nggallery' ); ?>
 									</label>
 								</div>
@@ -478,6 +478,7 @@ wp_enqueue_script( 'ngg-autocomplete', NGGALLERY_URLPATH . 'src/admin/js/ngg.aut
 		</div>
 		<script type="text/javascript">
 		  document.addEventListener("DOMContentLoaded", function(){
+		        console.log('window');
 				jQuery("#gallerytag").nggAutocomplete( {
 					type: 'gallery',domain: "<?php echo home_url( 'index.php', is_ssl() ? 'https' : 'http' ); ?>"
 				});

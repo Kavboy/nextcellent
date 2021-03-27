@@ -275,8 +275,8 @@ class nggGallery {
 		} elseif ( file_exists( WP_CONTENT_DIR . "/ngg_styles/$template_name.php" ) ) {
 			include( WP_CONTENT_DIR . "/ngg_styles/$template_name.php" );
 			// use defaults
-		} elseif ( file_exists( NGGALLERY_ABSPATH . "/view/$template_name.php" ) ) {
-			include( NGGALLERY_ABSPATH . "/view/$template_name.php" );
+		} elseif ( file_exists( NGGALLERY_ABSPATH . "/src/view/$template_name.php" ) ) {
+			include( NGGALLERY_ABSPATH . "/src/view/$template_name.php" );
 		} elseif ( $callback === true ) {
 			echo "<p>Rendering of template $template_name.php failed</p>";
 		} else {

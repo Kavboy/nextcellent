@@ -218,7 +218,7 @@ if (! class_exists('nggLoader') ) {
             }
 
             if ($wp->query_vars['callback'] == 'json' ) {
-	            require_once dirname( __FILE__ ) . '/xml/json.php';
+	            require_once dirname( __FILE__ ) . '/src/xml/json.php';
                 exit();
             }
 
@@ -229,7 +229,7 @@ if (! class_exists('nggLoader') ) {
 
             // TODO:see trac #12400 could be an option for WP3.0
             if ($wp->query_vars['callback'] == 'ngg-ajax' ) {
-	            require_once dirname( __FILE__ ) . '/xml/ajax.php';
+	            require_once dirname( __FILE__ ) . '/src/xml/ajax.php';
                 exit();
             }
         }
