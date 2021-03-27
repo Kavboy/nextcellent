@@ -1,0 +1,52 @@
+{
+  "name": "nextcellent-fork",
+  "version": "1.9.36",
+  "description": "Fork of the Nextcellent Gallery wordpress plugin",
+  "scripts": {
+    "build": "babel js/ngg.js -d public/js",
+    "build-dev": "babel js/ngg.js -d public/js --source-maps",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kavboy/nextcellent-fork.git"
+  },
+  "keywords": [
+    "gallery",
+    "image",
+    "images",
+    "photo",
+    "photos",
+    "picture",
+    "pictures",
+    "slideshow",
+    "flash",
+    "media",
+    "thumbnails",
+    "photo-albums",
+    "NextGEN-gallery",
+    "NextGEN",
+    "nextcellent-gallery",
+    "nextcellent"
+  ],
+  "author": "Fernando Zorrilla",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/Kavboy/nextcellent-fork/issues"
+  },
+  "private": true,
+  "devDependencies": {
+    "@babel/cli": "^7.13.10",
+    "@babel/core": "^7.13.10",
+    "@babel/eslint-parser": "^7.13.10",
+    "@babel/preset-env": "^7.13.12",
+    "@wordpress/eslint-plugin": "^7.3.0",
+    "copyfiles": "^2.4.1",
+    "eslint": "^7.22.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "prettier": "^2.2.1"
+  }
+}

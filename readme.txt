@@ -10,8 +10,6 @@ License: GPLv2
 
 = 1.9.35 - 2017-10-16 = Fixes for 1.9.34
 
-What's in it for you?
-
 * fix: missing library preventing main window insert tags. Fixed
 
 VERY IMPORTANT: Read ON!

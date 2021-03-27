@@ -1,0 +1,56 @@
+{
+  "name": "kavboy/nextcellent-fork",
+  "description": "Fork of the Nextcellent Gallery wordpress plugin",
+  "minimum-stability": "stable",
+  "license": "GPL-2.0",
+  "require": {
+    "php": "^5.4|^7|^8"
+  },
+  "require-dev": {
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+    "squizlabs/php_codesniffer": "^3.5",
+    "phpcompatibility/phpcompatibility-wp": "^2.1",
+    "wp-coding-standards/wpcs": "^2.3",
+    "slowprog/composer-copy-file": "^0.3.3"
+  },
+  "scripts": {
+    "build": [
+      "@lint-php",
+      "@lint-js",
+      "@copy-files",
+      "@npm"
+    ],
+    "build-no-lint": [
+      "@copy-files",
+      "@npm-dev"
+    ],
+    "copy-files": [
+      "SlowProg\\CopyFile\\ScriptHandler::copy"
+    ],
+    "lint-php": [
+      "phpcbf --standard=phpcs.xml ./src"
+    ],
+    "lint-js": [
+      "eslint --fix public/js/ngg.js",
+      "eslint --fix public/js/nxc.main.js",
+      "eslint --fix src/admin/js/ngg.ajax.js",
+      "eslint --fix src/admin/js/ngg.autocomplete.js",
+      "eslint --fix src/admin/js/ngg.progressbar.js",
+      "eslint --fix src/admin/js/plupload.handler.js",
+      "eslint --fix src/admin/js/cropper/cropper.js",
+      "eslint --fix src/admin/js/jqueryFileTree/jqueryFileTree.js"
+    ],
+    "npm": [
+      "npm run build"
+    ],
+    "npm-dev": [
+      "npm run build-dev"
+    ]
+  },
+  "extra": {
+    "copy-file": {
+      "css/": "public/css/",
+      "js/": "public/js/"
+    }
+  }
+}
