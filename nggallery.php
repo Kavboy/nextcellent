@@ -537,7 +537,7 @@ if (! class_exists('nggLoader') ) {
 
             // activate modified Shutter reloaded if not use the Shutter plugin
             if (( $this->options['thumbEffect'] == 'shutter' ) && ! function_exists('srel_makeshutter') ) {
-                wp_register_script('shutter', NGGALLERY_URLPATH . 'src/shutter/shutter-reloaded.js', false, '1.3.3');
+                wp_register_script('shutter', NGGALLERY_URLPATH . 'public/js/shutter-reloaded.js', false, '1.3.3');
                 wp_localize_script(
                     'shutter',
                     'shutterSettings',
@@ -562,7 +562,7 @@ if (! class_exists('nggLoader') ) {
             // Load AJAX navigation script, works only with shutter script as we need to add the listener
             if ($this->options['galAjaxNav'] ) {
                 if (( $this->options['thumbEffect'] == 'shutter' ) || function_exists('srel_makeshutter') ) {
-                    wp_enqueue_script('ngg_script', NGGALLERY_URLPATH . 'public/js/ngg.js', array( 'jquery', 'jquery-ui-tooltip' ), '2.1');
+                    wp_enqueue_script('ngg_script', NGGALLERY_URLPATH . 'public/js/ngg.js', array( 'jquery' ), '2.1');
                     wp_localize_script(
                         'ngg_script',
                         'ngg_ajax',
@@ -631,7 +631,7 @@ if (! class_exists('nggLoader') ) {
 
             // activate modified Shutter reloaded if not use the Shutter plugin
             if (( $this->options['thumbEffect'] == 'shutter' ) && ! function_exists('srel_makeshutter') ) {
-                wp_enqueue_style('shutter', NGGALLERY_URLPATH . 'src/shutter/shutter-reloaded.css', false, '1.3.4', 'screen');
+                wp_enqueue_style('shutter', NGGALLERY_URLPATH . 'public/css/shutter-reloaded.css', false, '1.3.4', 'screen');
             }
 
             // add qunit style if activated. I put 1.0.0 as formula, but it would mean nothing.
