@@ -15,21 +15,6 @@ jQuery('document').ready(function () {
   });
   jQuery('a.ngg-browser-prev').click(function (e) {
     return ngg_ajax_browser_navigation(e, this);
-  }); // 29/01/2015: this prevents ajax from running.
-  // Qunit conditional call
-
-  /** if (ngg_get_url_vars().nextcellent) {
-  		//Como invoco esto?
-  		//edcal_test.runTests();
-  	} */
-  // Activate tooltip. Allow HTML content.
-  // See http://jqueryui.com/tooltip/ for examples.
-  // See http://stackoverflow.com/questions/15734105/jquery-ui-tooltip-does-not-support-html-content
-
-  jQuery(document).tooltip({
-    content: function content() {
-      return jQuery.parseHTML(this.getAttribute('title'));
-    }
   });
 });
 
@@ -168,7 +153,7 @@ function ngg_ajax_browser_navigation(e, obj) {
 var loadingImage;
 
 function ngg_show_loading(obj) {
-  loadingImage = jQuery(document.createElement('img')).attr('src', ngg_ajax.path + 'images/ajax-loader.gif').attr('alt', ngg_ajax.loading);
+  loadingImage = jQuery(document.createElement('img')).attr('src', ngg_ajax.path + 'src/images/ajax-loader.gif').attr('alt', ngg_ajax.loading);
   jQuery('body').append(loadingImage);
   jQuery(loadingImage).css({
     position: 'absolute',
@@ -187,4 +172,3 @@ function ngg_remove_loading() {
   jQuery(document).unbind('mousemove');
   jQuery(loadingImage).remove();
 }
-//# sourceMappingURL=ngg.js.map

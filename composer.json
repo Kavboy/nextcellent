@@ -22,7 +22,7 @@
     ],
     "build-no-lint": [
       "@copy-files",
-      "@npm-dev"
+      "@npm"
     ],
     "copy-files": [
       "SlowProg\\CopyFile\\ScriptHandler::copy"
@@ -42,9 +42,6 @@
     ],
     "npm": [
       "npm run build"
-    ],
-    "npm-dev": [
-      "npm run build-dev"
     ]
   },
   "extra": {

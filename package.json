@@ -3,8 +3,7 @@
   "version": "1.9.36",
   "description": "Fork of the Nextcellent Gallery wordpress plugin",
   "scripts": {
-    "build": "babel js/ngg.js -d public/js",
-    "build-dev": "babel js/ngg.js -d public/js --source-maps",
+    "build": "babel js/ngg.js -d public/js js/shutter-reloaded.js -d public/js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
