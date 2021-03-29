@@ -1,7 +1,7 @@
 /*
 Shutter Reloaded for NextGEN Gallery
 http://www.laptoptips.ca/javascripts/shutter-reloaded/
-Version: 1.3.3
+Version: 1.4.0
 Copyright (C) 2007-2008  Andrew Ozz (Modification by Alex Rabe)
 Released under the GPL, http://www.gnu.org/copyleft/gpl.html
 
@@ -35,7 +35,12 @@ shutterReloaded = {
 	settings() {
 		const s = shutterSettings;
 
+		this.keyEventlistenerIsSet = false;
+
 		this.imageCount = s.imageCount || 0;
+		this.currentTabElement = this.currentTabElement
+			? this.currentTabElement
+			: 0;
 	},
 
 	init(a) {
@@ -101,7 +106,7 @@ shutterReloaded = {
 						e.target.parentElement.className
 					].find((el) => el.src === e.target.parentElement.href);
 
-					this.make(imgObj);
+					this.createShutter(imgObj);
 					return false;
 				});
 			});
@@ -109,7 +114,13 @@ shutterReloaded = {
 		this.settings();
 	},
 
-	make(imgObj, fs) {
+	/**
+	 * Creates the complete shutter
+	 *
+	 * @param imgObj
+	 * @param fs
+	 */
+	createShutter(imgObj, fs) {
 		if (!this.Top) {
 			if (typeof window.pageYOffset !== 'undefined') {
 				this.Top = window.pageYOffset;
@@ -155,12 +166,39 @@ shutterReloaded = {
 			this.VP = true;
 		}
 
-		const shutter = this.createShadowBox();
+		const shadowBox = this.createShadowBox();
+		shadowBox.style.height = this.pgHeight + 'px';
 
-		const shutterDisplay = this.createImageBox(shutter);
+		let loadError = document.getElementById('shLoadError');
+		if (!loadError) {
+			loadError = document.createElement('div');
+			loadError.id = 'shLoadError';
+			loadError.innerText = 'Image load failed, please try again';
+			shadowBox.appendChild(loadError);
+		}
 
-		const image = this.createImage(imgObj);
-		const navBar = this.createNavigation(imgObj);
+		loadError.style.top =
+			this.Top + (this.wHeight - loadError.clientHeight) * 0.5 + 'px';
+
+		let spinner = document.getElementById('shSpinner');
+		if (!spinner) {
+			spinner = document.createElement('div');
+			spinner.id = 'shSpinner';
+			shadowBox.appendChild(spinner);
+		}
+
+		spinner.style.display = 'block';
+
+		spinner.style.top =
+			this.Top + (this.wHeight - spinner.clientHeight) * 0.5 + 'px';
+
+		let imageBox = document.getElementById('shDisplay');
+
+		if (!imageBox) {
+			imageBox = this.createImageBox();
+			shadowBox.appendChild(imageBox);
+		}
+		imageBox.style.visibility = 'hidden';
 
 		let descriptionDiv = document.getElementById('shDescription');
 		if (!descriptionDiv) {
@@ -196,7 +234,15 @@ shutterReloaded = {
 			});
 		}
 
-		imageWrapperDiv.appendChild(image);
+		const image = document.getElementById('shutterImg');
+		if (image) {
+			this.setImgAttributes(image, imgObj);
+		} else {
+			const image = this.createImage(imgObj);
+			imageWrapperDiv.appendChild(image);
+		}
+
+		const navBar = this.createNavigation(imgObj);
 
 		if (shutterSets[imgObj.set].length > 1) {
 			imageWrapperDiv.appendChild(navBar);
@@ -211,15 +257,33 @@ shutterReloaded = {
 			navBar.style.borderRadius = '0 0 5px 5px';
 		}
 
-		shutterDisplay.appendChild(crossCloseDiv);
-		shutterDisplay.appendChild(imageWrapperDiv);
+		imageBox.appendChild(crossCloseDiv);
+		imageBox.appendChild(imageWrapperDiv);
 
-		document.addEventListener('keydown', (ev) => {
-			ev.stopPropagation();
-			this.handleArrowKeys(ev);
-		});
+		// Only add the event listener one time to the document
+		if (!this.keyEventlistenerIsSet) {
+			document.addEventListener('keydown', this.functionEventHandler);
+			this.keyEventlistenerIsSet = true;
+		}
 	},
 
+	/**
+	 * function handler for the keydown eventlistener, to be able to remove it later
+	 *
+	 * @param ev
+	 */
+	functionEventHandler(ev) {
+		ev.stopPropagation();
+		shutterReloaded.handleKeys(ev);
+	},
+
+	/**
+	 * If shadowBox does not exist already creates the div with id
+	 * and appends it to the body element and returns the element.
+	 * Else returns the already existing element.
+	 *
+	 * @return {HTMLElement} div
+	 */
 	createShadowBox() {
 		let shadowBox = document.getElementById('shShutter');
 		if (!shadowBox) {
@@ -231,38 +295,49 @@ shutterReloaded = {
 				ev.stopPropagation();
 				this.hideShutter();
 			});
+			shadowBox.addEventListener('wheel', (ev) => {
+				ev.stopPropagation();
+				ev.preventDefault();
+			});
 		}
-		shadowBox.style.height = this.pgHeight + 'px';
 		return shadowBox;
 	},
 
-	createImageBox(shadowBox) {
+	/**
+	 * Creates the image box div with id and returns it.
+	 *
+	 * @return {HTMLElement}
+	 */
+	createImageBox() {
 		let imageBox = document.getElementById('shDisplay');
 		if (!imageBox) {
 			imageBox = document.createElement('div');
-			imageBox.setAttribute('id', 'shDisplay');
-			imageBox.style.top = this.Top + 'px';
-			shadowBox.appendChild(imageBox);
+			imageBox.id = 'shDisplay';
 		}
 		return imageBox;
 	},
 
+	/**
+	 * Creates the image element
+	 *
+	 * @param imgObj
+	 * @return {HTMLImageElement}
+	 */
 	createImage(imgObj) {
-		const prevImage = document.getElementById('shutterImg');
-		if (prevImage) {
-			const imageBox = prevImage.parentElement;
-
-			imageBox.removeChild(prevImage);
-		}
-
 		const image = document.createElement('img');
-		image.src = imgObj.src;
-		image.id = 'shutterImg';
-		image.alt = imgObj.alt;
-		image.title = imgObj.description;
+
+		this.setImgAttributes(image, imgObj);
+
 		image.addEventListener('load', (ev) => {
 			ev.stopPropagation();
 			this.showImg();
+		});
+		image.addEventListener('error', (ev) => {
+			ev.stopPropagation();
+			this.hideSpinner();
+
+			const loadError = document.getElementById('shLoadError');
+			loadError.style.display = 'block';
 		});
 		image.addEventListener('click', (ev) => {
 			ev.stopPropagation();
@@ -271,18 +346,80 @@ shutterReloaded = {
 		return image;
 	},
 
+	/**
+	 * function to hide the spinner with css
+	 */
+	hideSpinner() {
+		const spinner = document.getElementById('shSpinner');
+		spinner.style.display = 'none';
+	},
+
+	/**
+	 * Sets all attributes of the image element
+	 *
+	 * @param image
+	 * @param imgObj
+	 */
+	setImgAttributes(image, imgObj) {
+		image.src = imgObj.src;
+		image.id = 'shutterImg';
+		image.alt = imgObj.alt;
+		image.title = imgObj.description;
+	},
+
+	/**
+	 * Returns the imgObj before the current one
+	 *
+	 * @param imgObj
+	 * @return {Object}
+	 */
+	getPreviousImage(imgObj) {
+		return shutterSets[imgObj.set].find((el) => el.num === imgObj.num - 1);
+	},
+
+	/**
+	 * Returns the imgObj after the current one
+	 *
+	 * @param imgObj
+	 * @return {Object}
+	 */
+	getNextImage(imgObj) {
+		return shutterSets[imgObj.set].find((el) => el.num === imgObj.num + 1);
+	},
+
+	/**
+	 * Creates and returns the image Count text in the format:
+	 * (Number / Number)
+	 *
+	 * Or an empty String
+	 *
+	 * @param imgObj
+	 * @return {string}
+	 */
+	getImgCountText(imgObj) {
+		let text = '';
+
+		if (imgObj.num >= 0 && this.imageCount) {
+			text = '(';
+			text += imgObj.num + 1;
+			text += ' / ';
+			text += shutterSets[imgObj.set].length;
+			text += ')';
+		}
+
+		return text;
+	},
+
+	/**
+	 * Creates the complete navigation bar and returns it
+	 *
+	 * @param imgObj
+	 * @return {HTMLElement}
+	 */
 	createNavigation(imgObj) {
-		const currentImage = shutterSets[imgObj.set].find(
-			(el) => el.src === imgObj.src
-		);
+		const prevImage = this.getPreviousImage(imgObj);
 
-		const prevImage = shutterSets[imgObj.set].find(
-			(el) => el.num === currentImage.num - 1
-		);
-
-		const nextImage = shutterSets[imgObj.set].find(
-			(el) => el.num === currentImage.num + 1
-		);
+		const nextImage = this.getNextImage(imgObj);
 
 		let navBar = document.getElementById('shNavBar');
 		if (!navBar) {
@@ -311,17 +448,7 @@ shutterReloaded = {
 			imgCountDiv = document.createElement('div');
 			imgCountDiv.id = 'shCount';
 		}
-		imgCountDiv.innerText = '';
-
-		if (currentImage.num >= 0 && this.imageCount) {
-			let text = '(';
-			text += currentImage.num + 1;
-			text += ' / ';
-			text += shutterSets[imgObj.set].length;
-			text += ')';
-
-			imgCountDiv.innerText = text;
-		}
+		imgCountDiv.innerText = this.getImgCountText(imgObj);
 
 		let prevLink = document.getElementById('prevpic');
 		if (prevImage) {
@@ -334,7 +461,7 @@ shutterReloaded = {
 				prevLink.addEventListener('click', (ev) => {
 					ev.stopPropagation();
 					ev.preventDefault();
-					this.make(prevImage);
+					this.createShutter(prevImage);
 				});
 				prevDiv.appendChild(prevLink);
 			} else {
@@ -342,7 +469,7 @@ shutterReloaded = {
 				newPrevLink.addEventListener('click', (ev) => {
 					ev.stopPropagation();
 					ev.preventDefault();
-					this.make(prevImage);
+					this.createShutter(prevImage);
 				});
 				prevLink.parentNode.replaceChild(newPrevLink, prevLink);
 			}
@@ -361,7 +488,7 @@ shutterReloaded = {
 				nextLink.addEventListener('click', (ev) => {
 					ev.stopPropagation();
 					ev.preventDefault();
-					this.make(nextImage);
+					this.createShutter(nextImage);
 				});
 				nextDiv.appendChild(nextLink);
 			} else {
@@ -369,7 +496,7 @@ shutterReloaded = {
 				newNextLink.addEventListener('click', (ev) => {
 					ev.stopPropagation();
 					ev.preventDefault();
-					this.make(nextImage);
+					this.createShutter(nextImage);
 				});
 				nextLink.parentNode.replaceChild(newNextLink, nextLink);
 			}
@@ -384,21 +511,34 @@ shutterReloaded = {
 		return navBar;
 	},
 
+	/**
+	 * Removes all Shutter elements and event listeners
+	 */
 	hideShutter() {
-		let display, shutter;
-		if ((display = document.getElementById('shDisplay'))) {
-			display.parentNode.removeChild(display);
+		let imageBox, shadowBox;
+		if ((imageBox = document.getElementById('shDisplay'))) {
+			imageBox.parentNode.removeChild(imageBox);
 		}
-		if ((shutter = document.getElementById('shShutter'))) {
-			shutter.parentNode.removeChild(shutter);
+		if ((shadowBox = document.getElementById('shShutter'))) {
+			shadowBox.parentNode.removeChild(shadowBox);
 		}
 		this.hideTags(true);
 		window.scrollTo(0, this.Top);
 		window.onresize = this.FS = this.Top = this.VP = null;
 		document.documentElement.style.overflowX = '';
-		document.onkeydown = null;
+
+		// Only remove the event listener if it is defined
+		if (this.keyEventlistenerIsSet) {
+			document.removeEventListener('keydown', this.functionEventHandler);
+			this.keyEventlistenerIsSet = false;
+		}
 	},
 
+	/**
+	 * Recalculates all widths and heights of the shutter elements
+	 *
+	 * @param imgObj
+	 */
 	resize(imgObj) {
 		const shadowBox = document.getElementById('shShutter');
 		const imageBox = document.getElementById('shDisplay');
@@ -411,6 +551,8 @@ shutterReloaded = {
 			return;
 		}
 		this._viewPort();
+
+		imageBox.style.top = this.Top + 'px';
 
 		if (image.height > this.wHeight) {
 			image.width = image.width * (this.wHeight / image.height);
@@ -440,6 +582,7 @@ shutterReloaded = {
 			'px';
 
 		const maxHeight = this.Top + image.height + 10;
+
 		if (maxHeight > this.pgHeight) {
 			shadowBox.style.height = maxHeight + 'px';
 		}
@@ -450,6 +593,11 @@ shutterReloaded = {
 		imageBox.style.top = this.Top + minTop + 'px';
 	},
 
+	/**
+	 * Calculates the window width and height and adds them to this
+	 *
+	 * @private
+	 */
 	_viewPort() {
 		const winInnerHeight = window.innerHeight ? window.innerHeight : 0;
 		const docBodCliHeight = document.body.clientHeight
@@ -483,31 +631,20 @@ shutterReloaded = {
 		this.wWidth = docElWidth > 1 ? docElWidth : docBodyWidth;
 	},
 
+	/**
+	 * Calls resize and hideSpinner and then sets the visibility of the imageBox
+	 */
 	showImg() {
-		let shadowBox = document.getElementById('shShutter'),
-			imageBox = document.getElementById('shDisplay'),
-			image = document.getElementById('shutterImg'),
-			navBar = document.getElementById('shNavBar'),
-			titleDiv = document.getElementById('shDescription'),
-			crossCloseDiv = document.getElementById('shCrossClose'),
-			imgWrapper,
-			waitScreen,
-			wHeight,
-			wWidth,
-			shHeight,
-			maxHeight,
-			itop,
-			mtop,
-			resized = 0;
+		const shadowBox = document.getElementById('shShutter');
+		const imageBox = document.getElementById('shDisplay');
 
 		if (!shadowBox) {
 			return;
 		}
-		if ((waitScreen = document.getElementById('shWaitBar'))) {
-			waitScreen.parentNode.removeChild(waitScreen);
-		}
 
 		this.resize();
+		this.hideSpinner();
+		imageBox.style.visibility = 'visible';
 	},
 
 	hideTags(arg) {
@@ -532,7 +669,40 @@ shutterReloaded = {
 		}
 	},
 
-	handleArrowKeys(event) {
+	/**
+	 * returns an array of the currently tabbable elements of the shutter
+	 *
+	 * @return {[]}
+	 */
+	getCurrentTabElements() {
+		const nextlink = document.getElementById('nextpic');
+		const prevlink = document.getElementById('prevpic');
+		const closelink = document.getElementById('shCrossClose');
+
+		const array = [];
+
+		if (nextlink) {
+			array.push(nextlink);
+		}
+
+		if (prevlink) {
+			array.push(prevlink);
+		}
+
+		if (closelink) {
+			array.push(closelink);
+		}
+
+		return array;
+	},
+
+	/**
+	 * handles the key events for the shutter
+	 * Arrow / tab keys
+	 *
+	 * @param event
+	 */
+	handleKeys(event) {
 		let code = 0;
 		if (!event) {
 			const event = window.event;
@@ -560,9 +730,34 @@ shutterReloaded = {
 				break;
 			case 27: // Esc key
 				if (closelink) {
-					closelink.click();
+					this.hideShutter();
 				}
 				break;
+			case 9: // Tab key
+				const tabElements = this.getCurrentTabElements();
+
+				if (this.currentTabElement === 0) {
+					// without timeout focus is not changed to the element
+					window.setTimeout(() => {
+						tabElements[this.currentTabElement].focus();
+					}, 0);
+
+					this.currentTabElement++;
+				} else if (
+					this.currentTabElement !== 0 &&
+					this.currentTabElement === tabElements.length - 1
+				) {
+					window.setTimeout(() => {
+						tabElements[this.currentTabElement].focus();
+					}, 0);
+
+					this.currentTabElement = 0;
+				} else {
+					window.setTimeout(() => {
+						tabElements[this.currentTabElement].focus();
+					}, 0);
+					this.currentTabElement++;
+				}
 		}
 	},
 };
