@@ -378,7 +378,7 @@ class NGG_Admin_Launcher {
 				wp_enqueue_script( 'jquery-ui-datepicker' );
 				wp_enqueue_script( 'ngg-autocomplete' );
 				wp_enqueue_script( 'ngg-cropper', plugins_url( 'js/cropper/cropper.min.js', __FILE__ ), '2.2.5' );
-				wp_register_script( 'shutter', plugins_url( 'public/js/shutter-reloaded.js', __DIR__ ), false, '1.3.2' );
+				wp_register_script( 'shutter', plugins_url( 'public/js/shutter-reloaded.js', __DIR__ ), false, '1.4.0' );
 				wp_localize_script(
 					'shutter',
 					'shutterSettings',
