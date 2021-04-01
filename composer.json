@@ -17,37 +17,19 @@
     "build": [
       "@lint-php",
       "@lint-js",
-      "@copy-files",
       "@npm"
     ],
     "build-no-lint": [
-      "@copy-files",
       "@npm"
-    ],
-    "copy-files": [
-      "SlowProg\\CopyFile\\ScriptHandler::copy"
     ],
     "lint-php": [
       "phpcbf --standard=phpcs.xml ./src"
     ],
     "lint-js": [
-      "eslint --fix public/js/ngg.js",
-      "eslint --fix public/js/nxc.main.js",
-      "eslint --fix src/admin/js/ngg.ajax.js",
-      "eslint --fix src/admin/js/ngg.autocomplete.js",
-      "eslint --fix src/admin/js/ngg.progressbar.js",
-      "eslint --fix src/admin/js/plupload.handler.js",
-      "eslint --fix src/admin/js/cropper/cropper.js",
-      "eslint --fix src/admin/js/jqueryFileTree/jqueryFileTree.js"
+      "eslint --fix public/js",
     ],
     "npm": [
       "npm run build"
     ]
-  },
-  "extra": {
-    "copy-file": {
-      "css/": "public/css/",
-      "js/": "public/js/"
-    }
   }
 }
