@@ -3,6 +3,9 @@
   "version": "1.9.36",
   "description": "Fork of the Nextcellent Gallery wordpress plugin",
   "scripts": {
+    "clean": "fsbin emptyDir public",
+    "copy-files": "fsbin mkdirs public/js && fsbin mkdirs public/css && fsbin copy js public/js && fsbin copy css public/css",
+    "prebuild": "npm run clean && npm run copy-files",
     "build": "babel js/ngg.js -d public/js js/shutter-reloaded.js -d public/js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -46,6 +49,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.3.1",
+    "fsbin": "^1.0.10",
     "prettier": "^2.2.1"
   }
 }
